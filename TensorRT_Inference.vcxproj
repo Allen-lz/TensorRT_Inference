@@ -152,29 +152,20 @@ nvparsers.dll;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="classifier_inference.cpp" />
-    <ClCompile Include="code\src\alexnet.cpp" />
-    <ClCompile Include="code\src\CenterFace.cpp" />
     <ClCompile Include="code\src\classification.cpp" />
     <ClCompile Include="code\src\common.cpp" />
     <ClCompile Include="code\src\detection.cpp" />
     <ClCompile Include="code\src\faces.cpp" />
-    <ClCompile Include="code\src\ghostnet.cpp" />
+    <ClCompile Include="code\src\face_drive_v2.cpp" />
     <ClCompile Include="code\src\keypoints.cpp" />
     <ClCompile Include="code\src\model.cpp" />
-    <ClCompile Include="code\src\RetinaFace.cpp" />
     <ClCompile Include="code\src\scrfd.cpp" />
-    <ClCompile Include="detect_inference.cpp" />
     <ClCompile Include="examples\main.cpp" />
-    <ClCompile Include="facedrive_inference.cpp" />
-    <ClCompile Include="opencv_face_detect_inference.cpp" />
-    <ClCompile Include="test_yaml.cpp" />
-    <ClCompile Include="tmp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="code\includes\CenterFace.h" />
-    <ClInclude Include="code\includes\ghostnet.h" />
-    <ClInclude Include="code\includes\RetinaFace.h" />
+    <ClInclude Include="code\includes\classification.h" />
+    <ClInclude Include="code\includes\faces.h" />
+    <ClInclude Include="code\includes\face_drive_v2.h" />
     <ClInclude Include="code\includes\scrfd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

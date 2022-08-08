@@ -1,4 +1,4 @@
-#include "E:/vscode/TensorRT_Inference/code/includes/detection.h"
+#include "../includes/detection.h"
 // using namespace std;
 Detection::Detection(const YAML::Node &config) : Model(config) {
     labels_file = config["labels_file"].as<std::string>();

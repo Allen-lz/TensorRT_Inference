@@ -1,8 +1,4 @@
-//
-// Created by linghu8812 on 2022/7/19.
-//
-
-#include "E:/vscode/TensorRT_Inference/code/includes/keypoints.h"
+#include "../includes/keypoints.h"
 using namespace std;
 KeyPoints::KeyPoints(const YAML::Node &config) : Model(config) {}
 

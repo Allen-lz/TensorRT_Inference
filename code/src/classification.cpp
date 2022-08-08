@@ -1,4 +1,4 @@
-#include "E:/vscode/TensorRT_Inference/code/includes/classification.h"
+#include "../includes/classification.h"
 Classification::Classification(const YAML::Node &config) : Model(config) {
     labels_file = config["labels_file"].as<std::string>();
     class_labels = ReadImageNetLabel(labels_file);
@@ -25,6 +25,41 @@ std::vector<ClassRes> Classification::InferenceImages(std::vector<cv::Mat> &vec_
     delete[] output;
     return results;
 }
+
+
+void Classification::InferenceImage(cv::Mat &src_img,
+                                    std::vector<float> &face_drive_res) {
+
+ 
+  auto t_start_pre = std::chrono::high_resolution_clock::now();
+
+  if (channel_order == "RGB") 
+      cv::cvtColor(src_img, src_img, cv::COLOR_BGR2RGB);
+
+  std::vector<cv::Mat> vec_img;
+  vec_img.push_back(src_img);
+
+  std::vector<float> image_data = PreProcess(vec_img);
+  auto t_end_pre = std::chrono::high_resolution_clock::now();
+  float total_pre =
+      std::chrono::duration<float, std::milli>(t_end_pre - t_start_pre).count();
+  std::cout << "face_drive prepare image take: " << total_pre << " ms."
+            << std::endl;
+  auto *output = new float[outSize * BATCH_SIZE];
+  auto t_start = std::chrono::high_resolution_clock::now();
+  ModelInference(image_data, output);
+  auto t_end = std::chrono::high_resolution_clock::now();
+  float total_inf = std::chrono::duration<float, std::milli>(t_end - t_start).count();
+  std::cout << "face_drive inference take: " << total_inf << " ms." << std::endl;
+
+  for (int i = 0; i < 175; i++) {
+      // std::cout << output[i] << std::endl;
+      face_drive_res.push_back((float)output[i]);
+  }
+ 
+  delete[] output;
+}
+
 
 void Classification::InferenceFolder(const std::string &folder_name) {
     std::vector<std::string> image_list = ReadFolder(folder_name);

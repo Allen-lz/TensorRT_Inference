@@ -19,6 +19,7 @@ class Faces : public Model
 public:
     explicit Faces(const YAML::Node &config);
     std::vector<FacesRes> InferenceImages(std::vector<cv::Mat> &vec_img);
+    void InferenceImage(cv::Mat &src_img, std::vector<float> &new_bbox);
     void InferenceFolder(const std::string &folder_name) override;
     void DrawResults(const std::vector<FacesRes> &results, std::vector<cv::Mat> &vec_img,
                      std::vector<std::string> image_names);

@@ -1,8 +1,4 @@
-//
-// Created by linghu8812 on 2021/2/8.
-//
-
-#include "E:/vscode/TensorRT_Inference/code/includes/common.h"
+#include "../includes/common.h"
 #include <cstring>
 
 void setReportableSeverity(Logger::Severity severity)

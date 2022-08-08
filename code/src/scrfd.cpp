@@ -1,4 +1,4 @@
-#include <E:/vscode/TensorRT_Inference/code/includes/scrfd.h>
+#include "../includes/scrfd.h"
 
 scrfd::scrfd(const YAML::Node &config) : Faces(config) {
     anchor_sizes = config["anchor_sizes"].as<std::vector<std::vector<int>>>();

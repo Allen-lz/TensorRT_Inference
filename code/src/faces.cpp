@@ -1,5 +1,26 @@
-#include "E:/vscode/TensorRT_Inference/code/includes/faces.h"
+#include "../../code/includes/faces.h"
 #include "yaml-cpp/yaml.h"
+
+
+int bbox_expansion(int h, int w, const std::vector<float> &bbox, std::vector<float> &new_bbox) {
+  float expand_ratio = 0.4;
+
+  float bbox_w = bbox[2] - bbox[0];
+  float bbox_h = bbox[3] - bbox[1];
+
+  std::cout << bbox_h << " " << bbox_w << std::endl;
+
+  new_bbox.push_back(std::max<int>(0, bbox[0] - 0.3 * expand_ratio * bbox_w));
+  new_bbox.push_back(std::max<int>(0, bbox[1] - 0.4 * expand_ratio * bbox_h));
+
+  new_bbox.push_back(std::min<int>(w, bbox[2] + 0.1 * expand_ratio * bbox_w));
+  new_bbox.push_back(std::min<int>(h, bbox[3] + 0.1 * expand_ratio * bbox_h));
+
+  return 0;
+}
+
+
+
 Faces::Faces(const YAML::Node &config) : Model(config) {
     obj_threshold = config["obj_threshold"].as<float>();
     nms_threshold = config["nms_threshold"].as<float>();
@@ -39,6 +60,58 @@ std::vector<FacesRes> Faces::InferenceImages(std::vector<cv::Mat> &vec_img) {
     return results;
 }
 
+
+void Faces::InferenceImage(cv::Mat &src_img, std::vector<float> &new_bbox) {
+  auto t_start_pre = std::chrono::high_resolution_clock::now();
+
+  int h = src_img.rows;
+  int w = src_img.cols;
+
+  if (channel_order == "RGB") 
+      cv::cvtColor(src_img, src_img, cv::COLOR_BGR2RGB);
+
+  std::vector<cv::Mat> vec_img;
+  vec_img.push_back(src_img);
+  std::vector<float> image_data = PreProcess(vec_img);
+  auto t_end_pre = std::chrono::high_resolution_clock::now();
+  float total_pre =
+      std::chrono::duration<float, std::milli>(t_end_pre - t_start_pre).count();
+  std::cout << "face detection prepare image take: " << total_pre << " ms."
+            << std::endl;
+  auto *output = new float[outSize * BATCH_SIZE];
+  ;
+  auto t_start = std::chrono::high_resolution_clock::now();
+  ModelInference(image_data, output);
+  auto t_end = std::chrono::high_resolution_clock::now();
+  float total_inf =
+      std::chrono::duration<float, std::milli>(t_end - t_start).count();
+  std::cout << "face detection inference take: " << total_inf << " ms."
+            << std::endl;
+  auto r_start = std::chrono::high_resolution_clock::now();
+  auto results = PostProcess(vec_img, output);
+  auto r_end = std::chrono::high_resolution_clock::now();
+  float total_res =
+      std::chrono::duration<float, std::milli>(r_end - r_start).count();
+  std::cout << "face detection postprocess take: " << total_res << " ms."
+            << std::endl;
+  delete[] output;
+  // 这里只是取得了第一个人脸
+  float x1 = results[0].faces_results[0].bbox.x;
+  float y1 = results[0].faces_results[0].bbox.y;
+  float x2 = results[0].faces_results[0].bbox.w + x1;
+  float y2 = results[0].faces_results[0].bbox.h + y1;
+
+  std::vector<float> bbox;
+  bbox.push_back(x1);
+  bbox.push_back(y1);
+  bbox.push_back(x2);
+  bbox.push_back(y2);
+
+
+  // std::vector<float> new_bbox;
+  bbox_expansion(h,w, bbox, new_bbox);
+}
+
 void Faces::InferenceFolder(const std::string &folder_name) {
     std::vector<std::string> image_list = ReadFolder(folder_name);
     int index = 0;
@@ -51,7 +124,7 @@ void Faces::InferenceFolder(const std::string &folder_name) {
         std::cout << "Processing: " << image_name << std::endl;
         cv::Mat src_img = cv::imread(image_name);
         if (src_img.data) {
-            if (channel_order == "BGR")
+            if (channel_order == "RGB")  // 这里有问题吧
                 cv::cvtColor(src_img, src_img, cv::COLOR_BGR2RGB);
             vec_Mat[batch_id] = src_img.clone();
             vec_name[batch_id] = image_name;
@@ -94,7 +167,7 @@ void Faces::DrawResults(const std::vector<FacesRes> &faces, std::vector<cv::Mat>
         if (!org_img.data)
             continue;
         auto rects = faces[i].faces_results;
-        if (channel_order == "BGR")
+        if (channel_order == "RGB")
             cv::cvtColor(org_img, org_img, cv::COLOR_BGR2RGB);
         for(const auto &rect : rects) {
 

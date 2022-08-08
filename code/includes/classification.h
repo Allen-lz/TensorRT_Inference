@@ -13,6 +13,7 @@ class Classification : public Model
 public:
     explicit Classification(const YAML::Node &config);
     std::vector<ClassRes> InferenceImages(std::vector<cv::Mat> &vec_img);
+    void InferenceImage(cv::Mat &src_img, std::vector<float> &bs_res);
     void InferenceFolder(const std::string &folder_name) override;
     void DrawResults(const std::vector<ClassRes> &results, std::vector<cv::Mat> &vec_img,
                      std::vector<std::string> image_names);

@@ -15,25 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="classifier_inference.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_face_detect_inference.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="detect_inference.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="facedrive_inference.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="examples\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="tmp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="test_yaml.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="code\src\scrfd.cpp">
@@ -57,16 +39,7 @@
     <ClCompile Include="code\src\common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="code\src\CenterFace.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="code\src\RetinaFace.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="code\src\alexnet.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="code\src\ghostnet.cpp">
+    <ClCompile Include="code\src\face_drive_v2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,13 +47,13 @@
     <ClInclude Include="code\includes\scrfd.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code\includes\CenterFace.h">
+    <ClInclude Include="code\includes\face_drive_v2.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code\includes\RetinaFace.h">
+    <ClInclude Include="code\includes\faces.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code\includes\ghostnet.h">
+    <ClInclude Include="code\includes\classification.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

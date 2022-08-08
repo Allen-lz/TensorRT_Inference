@@ -1,10 +1,11 @@
-//
-// Created by linghu8812 on 2021/2/8.
-#include "E:/vscode/TensorRT_Inference/code/includes/model.h"
+#include "../includes/model.h"
 #include "NvInferPlugin.h"
 using namespace std;
 Model::Model(const YAML::Node &config) {
     onnx_file = config["onnx_file"].as<std::string>();
+
+    // cout << "这是加载的onnx路径: " << onnx_file << endl;
+
     engine_file = config["engine_file"].as<std::string>();
     BATCH_SIZE = config["BATCH_SIZE"].as<int>();
     INPUT_CHANNEL = config["INPUT_CHANNEL"].as<int>();
@@ -170,10 +171,10 @@ std::vector<float> Model::PreProcess(std::vector<cv::Mat> &vec_img) {
         }
     }
     // 将将要被输入到内存中的数值保存下来
-    FILE *f = fopen("trt_data.bin", "wb");
-    fwrite(result.data(), 1,
-           BATCH_SIZE * IMAGE_WIDTH * IMAGE_HEIGHT * INPUT_CHANNEL * sizeof(float), f);
-    fclose(f);
+    // FILE *f = fopen("trt_data.bin", "wb");
+    // fwrite(result.data(), 1,
+    //       BATCH_SIZE * IMAGE_WIDTH * IMAGE_HEIGHT * INPUT_CHANNEL * sizeof(float), f);
+    // fclose(f);
 
     // 读取从python中保存下来的数值并放到c++的tensorrt中进行推理
     // FILE *f = fopen("onnx_data.bin", "rb");
@@ -203,9 +204,10 @@ void Model::ModelInference(std::vector<float> image_data, float *output) {
     cudaMemcpyAsync(output, buffers[1], bufferSize[1], cudaMemcpyDeviceToHost, stream);
     cudaStreamSynchronize(stream);
 
-    for (int i = 0; i < 6; ++i) {
-        printf("%d, %.6f\n", i, output[i]);
-    }
+    // for (int i = 0; i < 6; ++i) {
+    //     printf("%d, %.6f\n", i, output[i]);
+    // }
+
     // printf("%d, %.6f\n", 174, output[173]);
     // cv::Mat result_matrix = cv::Mat(175, 1, CV_32FC1, output);
     // std::cout << bufferSize[0] << " " << bufferSize[1] << std::endl;
