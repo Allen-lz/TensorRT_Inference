@@ -1,0 +1,14 @@
+alexnet:
+    onnx_file:     "weights/simple_cat_merge_finetune_tongue_face_drive_v2.onnx"
+    engine_file:   "weights/simple_cat_merge_finetune_tongue_face_drive_v2.trt"
+    labels_file:   "E:/vscode/TensorRT_Inference/configs/labels/imagenet.names"
+    BATCH_SIZE:    1
+    INPUT_CHANNEL: 3
+    IMAGE_WIDTH:   224
+    IMAGE_HEIGHT:  224
+    image_order:   "BCHW"
+    channel_order: "RGB"
+    img_mean:      [ 0, 0, 0 ]
+    img_std:       [ 1, 1, 1 ]
+    alpha:         255
+    resize:        "directly"
