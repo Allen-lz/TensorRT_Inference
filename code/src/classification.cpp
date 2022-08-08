@@ -1,8 +1,8 @@
 #include "../includes/classification.h"
 Classification::Classification(const YAML::Node &config) : Model(config) {
-    labels_file = config["labels_file"].as<std::string>();
-    class_labels = ReadImageNetLabel(labels_file);
-    CATEGORY = class_labels.size();
+    // labels_file = config["labels_file"].as<std::string>();
+    // class_labels = ReadImageNetLabel(labels_file);
+    // CATEGORY = class_labels.size();
 }
 
 std::vector<ClassRes> Classification::InferenceImages(std::vector<cv::Mat> &vec_img) {

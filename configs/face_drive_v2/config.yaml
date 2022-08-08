@@ -1,7 +1,6 @@
 face_drive_v2:
     onnx_file:     "weights/simple_cat_merge_finetune_tongue_face_drive_v2.onnx"
     engine_file:   "weights/simple_cat_merge_finetune_tongue_face_drive_v2.trt"
-    labels_file:   "configs/labels/imagenet.names"
     BATCH_SIZE:    1
     INPUT_CHANNEL: 3
     IMAGE_WIDTH:   224
