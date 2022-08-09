@@ -37,7 +37,7 @@ void Model::OnnxToTRTModel() {
     // Build the engine
     builder->setMaxBatchSize(BATCH_SIZE);
     config->setMaxWorkspaceSize(8_GiB);
-    config->setFlag(nvinfer1::BuilderFlag::kFP16); // 16 ---> 32
+    config->setFlag(nvinfer1::BuilderFlag::kFP16); 
 
     std::cout << "start building engine" << std::endl;
     engine = builder->buildEngineWithConfig(*network, *config);
@@ -197,6 +197,9 @@ void Model::ModelInference(std::vector<float> image_data, float *output) {
     // }
 
     // DMA the input to the GPU,  execute the batch asynchronously, and DMA it back:
+
+
+
     cudaMemcpyAsync(buffers[0], image_data.data(), bufferSize[0], cudaMemcpyHostToDevice, stream);
 
     // do inference
@@ -205,7 +208,7 @@ void Model::ModelInference(std::vector<float> image_data, float *output) {
     cudaStreamSynchronize(stream);
 
     // for (int i = 0; i < 6; ++i) {
-    //     printf("%d, %.6f\n", i, output[i]);
+    //     printf("¼ì²â  %d, %.6f\n", i, output[i]);
     // }
 
     // printf("%d, %.6f\n", 174, output[173]);

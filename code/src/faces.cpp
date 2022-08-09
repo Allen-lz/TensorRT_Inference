@@ -73,13 +73,31 @@ void Faces::InferenceImage(cv::Mat &src_img, std::vector<float> &new_bbox) {
   std::vector<cv::Mat> vec_img;
   vec_img.push_back(src_img);
   std::vector<float> image_data = PreProcess(vec_img);
+
+
+  // 将要被输入到内存中的数值保存下来
+  // FILE *f = fopen("trt_detection_data.bin", "wb");
+  // fwrite(
+  //   image_data.data(), 1,
+  //     BATCH_SIZE * IMAGE_WIDTH * IMAGE_HEIGHT * INPUT_CHANNEL *
+  //       sizeof(float), f);
+  // fclose(f);
+
+
+  // 读取从python中保存下来的数值并放到c++的tensorrt中进行推理
+  //FILE *f = fopen("onnx_detection_data.bin", "rb");
+  //fread(image_data.data(), 1,
+  //     BATCH_SIZE * IMAGE_WIDTH * IMAGE_HEIGHT * INPUT_CHANNEL *
+  //     sizeof(float), f);
+  //fclose(f);
+
+
   auto t_end_pre = std::chrono::high_resolution_clock::now();
   float total_pre =
       std::chrono::duration<float, std::milli>(t_end_pre - t_start_pre).count();
   std::cout << "face detection prepare image take: " << total_pre << " ms."
             << std::endl;
   auto *output = new float[outSize * BATCH_SIZE];
-  ;
   auto t_start = std::chrono::high_resolution_clock::now();
   ModelInference(image_data, output);
   auto t_end = std::chrono::high_resolution_clock::now();
@@ -96,6 +114,7 @@ void Faces::InferenceImage(cv::Mat &src_img, std::vector<float> &new_bbox) {
             << std::endl;
   delete[] output;
   // 这里只是取得了第一个人脸
+
   float x1 = results[0].faces_results[0].bbox.x;
   float y1 = results[0].faces_results[0].bbox.y;
   float x2 = results[0].faces_results[0].bbox.w + x1;
